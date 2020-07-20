@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generate a random password in the browser - Passwrod Generator</title>
+  <link rel="stylesheet" href="/assets/css/reset.css">
+  <link rel="shortcut icon" href="./favicon.ico">
+  <style>
+    .title {
+      margin-top: 50px;
+      margin-bottom: 50px;
+    }
+    .range {
+        width: 100%;
+    }
+    .copy {
+        margin-top: 20px;
+    }
+    #tips {
+      opacity: 0;
+      position: fixed;
+      top: 150px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      background-color: rgba(0, 0, 0, .8);
+      color: #fff;
+      width: 200px;
+      text-align: center;
+      padding: 10px;
+      border-radius: 3px;
+      transition: opacity 1s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <h1 class="title">Password Generator</h1>
+
+    <div class="input-group">
+      <input class="input" type="text" readonly id="input">
+      <button id="copy" class="button copy">Copy</button>
+    </div>
+
+    <div class="input-group">
+      <label for="" class="label">
+          <span>Length</span>
+          <span id="num">12</span>
+      </label>
+      <input class="range" type="range" min="1" value="12" max="30">
+    </div>
+
+    <div class="input-group">
+      <label for="number" class="label">
+          <span>Number</span>
+          <input type="checkbox" name="" id="number" checked>
+      </label>
+      <div>0 - 9</div>
+    </div>
+
+    <div class="input-group">
+      <label class="label" for="lowercase">
+          <span>Lower Case Letter</span>
+          <input type="checkbox" name="" id="lowercase" checked>
+      </label>
+      <div>a - z</div>
+    </div>
+
+    <div class="input-group">
+      <label class="label" for="uppercase">
+          <span>Upper Case Letter</span>
+          <input type="checkbox" name="" id="uppercase" checked>
+      </label>
+      <div>A - Z</div>
+    </div>
+
+    <div class="input-group">
+      <label for="symbols" class="label">
+        <span>Symbols</span>
+        <input type="checkbox" name="" id="symbols">
+      </label>
+        <input type="text" class="input" value="!@#$%^&*()_+|~{}<>" id="symbol">
+    </div>
+  </div>
+
+  <div id="tips">Copy Success</div>
+
+  <script>
+    var digital = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    var lowerCaseLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+    var upperCaseLetters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+
+    var input = document.querySelector('#input');
+    var num = document.querySelector('#num');
+    var symbol = document.querySelector('#symbol')
+    var range = document.querySelector('.range');
+    var isNumber = document.querySelector('#number');
+    var isLowerCase = document.querySelector('#lowercase');
+    var isUpperCase = document.querySelector('#uppercase');
+    var isSymbols = document.querySelector('#symbols');
+    var copy = document.querySelector('#copy');
+    var tips = document.querySelector('#tips');
+
+    range.addEventListener('change', function() {
+      num.innerText = this.value;
+      gen();
+    });
+
+    isNumber.addEventListener('click', gen);
+    isLowerCase.addEventListener('click', gen);
+    isUpperCase.addEventListener('click', gen);
+    isSymbols.addEventListener('click', gen);
+    copy.addEventListener('click', function() {
+      navigator.clipboard.writeText(input.value);
+      tips.style.opacity = 100;
+      setTimeout(function() {
+        tips.style.opacity = 0;
+      }, 1200)
+    })
+
+    function gen() {
+      var total = parseInt(num.innerText);
+
+      var randomArray = [];
+      var randomString = '';
+
+      if (number.checked) {
+        randomArray = randomArray.concat(digital);
+      }
+
+      if (isLowerCase.checked) {
+        randomArray = randomArray.concat(lowerCaseLetters);
+      }
+
+      if (isUpperCase.checked) {
+        randomArray = randomArray.concat(upperCaseLetters);
+      }
+
+      if (isSymbols.checked) {
+        var symbols = symbol.value.split('');
+        console.log(symbols);
+        randomArray = randomArray.concat(symbols);
+      }
+
+      if (randomArray.length) {
+        for (var i = 0; i < total; i++) {
+          randomString += randomArray[Math.floor(Math.random() * randomArray.length)];
+        }
+      }
+
+      input.value = randomString;
+    }
+
+    gen();
+  </script>
+</body>
+</html>
